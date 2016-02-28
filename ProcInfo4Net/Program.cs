@@ -51,7 +51,7 @@ namespace ProcInfo4Net
 			{
 				Console.WriteLine("Need restart it as x86 process");
 				string path = currProc.MainModule.FileName;
-				string[] splitted = path.Split('.');
+				string[] splitted = Path.GetFileName(currProc.MainModule.FileName).Split('.');
 				string x86Path = Path.Combine(Path.GetDirectoryName(path), splitted[0] + "_x86." + splitted[1]);
 				ProcessStartInfo psi = new ProcessStartInfo(x86Path, procIdStr);
 				try { Process.Start(psi); }
