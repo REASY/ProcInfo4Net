@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace ProcInfo4Net
 		}
 		static void Main(string[] args)
 		{
-			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			if (args == null || args.Length != 1)
 			{
 				ShowHowToUse();
@@ -62,8 +63,11 @@ namespace ProcInfo4Net
 				return;
 			}
 			Console.WriteLine("Start working...");
-			var now = DateTime.Now.ToString().Replace(":", "_");
-			string fileName = string.Format("{0}_{1}_{2}.txt", Path.GetFileName(process.MainModule.FileName), procId, now);
+
+            var now = DateTime.Now.ToString(CultureInfo.InvariantCulture)
+                .Replace(CultureInfo.InvariantCulture.DateTimeFormat.DateSeparator, "_")
+                .Replace(CultureInfo.InvariantCulture.DateTimeFormat.TimeSeparator, "_");
+            string fileName = string.Format("{0}_{1}_{2}.txt", Path.GetFileName(process.MainModule.FileName), procId, now);
 			Console.WriteLine("The result will be saved in: '{0}'", fileName);
 
 			using (process)
